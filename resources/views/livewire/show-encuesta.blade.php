@@ -223,17 +223,27 @@
                                     {{-- <td class="text-sm text-gray-900 font-light px-6 py-4"> --}}
                                         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                             <div class="flex items-center">
-                                                <span class="mr-2 font-bold text-gray-400">{{ $encuesta->progreso_encuesta }}%</span>
+                                                {{-- <span class="mr-2 font-bold text-gray-400">{{ $encuesta->progreso_encuesta }}%</span> --}}
+                                                <span class="mr-2 font-bold text-gray-400">{{ $progress }}%</span>
                                                 <div class="relative w-full">
                                                     <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                                                        <div style="width: {{ $encuesta->progreso_encuesta }}%"
+                                                        {{-- <div style="width: {{ $encuesta->progreso_encuesta }}%"
                                                             class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center 
                                                             @if ($encuesta->progreso_encuesta < 30) bg-red-600 
                                                             @elseif($encuesta->progreso_encuesta < 50) bg-orange-600 
                                                             @elseif($encuesta->progreso_encuesta < 70) bg-yellow-500 
                                                             @elseif($encuesta->progreso_encuesta < 90) bg-teal-600 
                                                             @else bg-green-600 @endif">
+                                                        </div> --}}
+                                                          <div style="width: {{ $progress }}%"
+                                                            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center 
+                                                            @if ($progress < 30) bg-red-600 
+                                                            @elseif($progress < 50) bg-orange-600 
+                                                            @elseif($progress < 70) bg-yellow-500 
+                                                            @elseif($progress < 90) bg-teal-600 
+                                                            @else bg-green-600 @endif">
                                                         </div>
+                                                        <p class="text-sm text-gray-600 mt-2">{{ $progress }}% Completed</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,11 +260,11 @@
                                                 </a>
                                             </div>
                                             <div class="m-2">
-{{-- CHANGE THE PROGRESS OF THE ENCUESTA IN REAL TIME --}}
-                                                <a href=""
+                                                {{-- CHANGE THE PROGRESS OF THE ENCUESTA IN REAL TIME --}}
+                                                <button wire:click="" href=""
                                                     class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300 text-white">
                                                     <i class="fa-solid fa-bars-progress text-lg leading-none"></i>
-                                                </a>
+                                                </button>
                                             </div>
 
                                         </div>

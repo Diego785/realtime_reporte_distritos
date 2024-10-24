@@ -20,6 +20,15 @@ socket.on('connect', () => {
     console.log('Conexión establecida');
 });
 
+socket.on('progressUpdate', (data) => {
+    const progress = data.progress;
+    console.log(`Progress received: ${progress}%`);
+
+    // Emit to Livewire the updated progress
+    Livewire.emit('progressUpdated', progress);
+});
+
+
 socket.on('disconnect', () => {
     console.log('Desconectado');
 });

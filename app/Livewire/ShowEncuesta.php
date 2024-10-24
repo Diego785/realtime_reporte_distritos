@@ -21,11 +21,34 @@ class ShowEncuesta extends Component
 
     public $search;
 
+    // protected $listeners = ['actualizandoProgreso'];
+
+    public $progress = 10000;
+
+    protected $listeners = ['progressUpdated'];
+
+
     public function mount()
     {
     }
 
+    // public function actualizandoProgreso($encuesta)
+    // {
+    //     $encuesta_updating = Encuesta::find($encuesta);
+    //     $encuesta_updating->progreso_encuesta = $encuesta_updating->progreso_encuesta + 5;
+    //     $encuesta_updating->save();
+    //     // dd($encuesta_updating->progreso_encuesta);
+    // }
     
+    public function progressUpdated($progress)
+    {
+        dd($progress);
+
+        $this->progress = $progress;
+    }
+
+
+
     public function render()
     {
         $encuestas = Encuesta::where('titulo', 'like', '%' . $this->search . '%')
