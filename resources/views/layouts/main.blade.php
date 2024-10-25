@@ -732,56 +732,32 @@
     </script>
 
 
-    @vite('resources/js/app.js')
-
-    {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
-    @livewireScripts
-
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script> --}}
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-
     <script src="socket.io/socket.io.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+
+
     <script>
-        // console.log('Conexión establecida');
+        var socket = io('http://localhost:3001');
 
-        window.addEventListener('livewire:load', () => {
-            // console.log('Conexión establecida');
+        socket.on('connect', () => {
+            console.log('Conexión establecida');
+        });
 
-            var socket = io('http://localhost:3001');
-
-            socket.on('connect', () => {
-                console.log('Conexión establecida');
-            });
-
-            socket.on('disconnect', () => {
-                console.log('Desconectado');
-            });
-
-            // socket.on('messageReceived', (message) => {
-            //     // Acciones a realizar cuando se reciba un mensaje
-            //     console.log('Mensaje recibido:', message);
-            // });
-
-            // socket.on('messageReceived', (message) => {
-            //     Livewire.emit('messageReceived', message);
-            // });
-
-
-            // Livewire.hook('message.processed', () => {
-            //     socket.disconnect();
-            //     socket.connect();
-            // });
+        socket.on('disconnect', () => {
+            console.log('Desconectado');
         });
     </script>
+
+
+
+
+    @livewireScripts
 
     @stack('js')
 
 
     @stack('modals')
-
-
-
-
 
 
     @if (session('swal'))
@@ -796,6 +772,21 @@
         });
     </script>
 
+
+<script>
+    (function() {
+        var fs = (document.location.protocol === 'file:');
+        var ff = (navigator.userAgent.toLowerCase().indexOf('firefox') !== -1);
+        if (fs && !ff) {
+            (new joint.ui.Dialog({
+                width: 300,
+                type: 'alert',
+                title: 'Local File',
+                content: $('#message-fs').show()
+            })).open();
+        }
+    })();
+</script>
 
 
 

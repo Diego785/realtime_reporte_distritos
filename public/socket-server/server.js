@@ -30,26 +30,14 @@ io.on('connection', (socket) => {
     const sessionId = socket.handshake.auth.sessionId;
     console.log('Usuario conectado:', socket.id);
 
-    // Simulate progress update
-    setInterval(() => {
-        const progress = Math.floor(Math.random() * 100);
-        io.emit('progressUpdate', { progress });
-    }, 5000); // Update progress every 5 seconds for demo purposes
 
-    // Emit event with initial progress value if needed
-    socket.emit('progressUpdate', { progress: 0 });
-
-    // Handle updates to the progress
-    socket.on('updateProgress', (data) => {
-        const { progress } = data;
-        console.log(`Progress updated to: ${progress}%`);
-
-        // Emit the updated progress to all connected clients
-        io.emit('progressUpdate', { progress });
+    // Listen for 'messageSent' from the client
+    socket.on('messageSent', (message, progress) => {
+        console.log('Message received on the server:', message);
+        
+        // Emit 'messageReceived' back to all connected clients
+        io.emit('messageReceived', { admin: 'Nuevo mensaje', message }, progress); // Optionally include the original message
     });
-
-
-
     socket.on('disconnect', () => {
         console.log('Usuario desconectado:', socket.id);
         delete connectedUsers[sessionId];

@@ -127,7 +127,13 @@
 
           
    
-            
+              <div>
+        <input type="text" wire:model.live="message" placeholder="Escribe tu mensaje">
+        <a wire:click="sendMessage" class="cursor-pointer">Enviar</a>
+    </div>
+    <div>
+        <p>Mensaje recibido: {{ $receivedMessage }}</p>
+    </div>
 
 
 
@@ -261,7 +267,7 @@
                                             </div>
                                             <div class="m-2">
                                                 {{-- CHANGE THE PROGRESS OF THE ENCUESTA IN REAL TIME --}}
-                                                <button wire:click="" href=""
+                                                <button wire:click="updateProgress({{ $encuesta->id }})"
                                                     class="flex p-2.5 bg-green-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300 text-white">
                                                     <i class="fa-solid fa-bars-progress text-lg leading-none"></i>
                                                 </button>
@@ -285,4 +291,37 @@
 </div>
 @endif
 </div>
+</div>
+
+@push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    
+
+    <script>
+        document.addEventListener('livewire:init', function() {
+            // Establish the Socket.io connection with the server
+            var socket = io('http://localhost:3001');
+            console.log('socket-message-sent event received', event); // Log received event
+
+            // Listen for the 'socket-message-sent' event dispatched by Livewire
+            Livewire.on('socket-message-sent', function(event) {
+                console.log('socket-message-sent event received', event); // Log received event
+                const message = event.message; // Directly access the message
+                const progress = event.progress; // Directly access the message
+                console.log('progrewss in Livewire.on:', progress);
+                socket.emit('messageSent', message, progress);
+                console.log('Message sent to Socket.io server:', message);
+            });
+
+            // Listen for the 'messageReceived' event from Socket.io server
+            socket.on('messageReceived', function(message, progress) {
+                console.log('Progress updated and Message received from server:', message);
+                console.log('Progress:', progress);
+                
+                //Emit the messageReceived event to Livewire
+                @this.set('progress', progress);
+            });
+        });
+    </script>
+@endpush
 </div>

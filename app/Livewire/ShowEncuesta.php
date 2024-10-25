@@ -20,34 +20,33 @@ class ShowEncuesta extends Component
     public $responses = [];
 
     public $search;
+    public $receivedMessage, $message;
 
     // protected $listeners = ['actualizandoProgreso'];
 
-    public $progress = 10000;
+    public $progress = 0;
 
-    protected $listeners = ['progressUpdated'];
+    // protected $listeners = ['progressUpdated'];
+    protected $listeners = [
+        'messageReceived' => 'handleMessageReceived',
+        'progressUpdated' => 'updateProgress' // Listen for progress updates
+    ];
 
 
-    public function mount()
+    //----------------------------- SOCKETS -----------------------------------//
+
+    public function sendMessage()
     {
+        $this->dispatch('socket-message-sent', message: $this->message, progress: $this->progress + 5);
+        $this->message = ''; // Clear the message
     }
-
-    // public function actualizandoProgreso($encuesta)
-    // {
-    //     $encuesta_updating = Encuesta::find($encuesta);
-    //     $encuesta_updating->progreso_encuesta = $encuesta_updating->progreso_encuesta + 5;
-    //     $encuesta_updating->save();
-    //     // dd($encuesta_updating->progreso_encuesta);
-    // }
-    
-    public function progressUpdated($progress)
+    public function handleMessageReceived($message)
     {
-        dd($progress);
-
-        $this->progress = $progress;
+        // Maneja el mensaje recibido del servidor de sockets
+        // Asigna el mensaje a una propiedad de Livewire
+        $this->receivedMessage = $message;
+        $this->emit('messageReceived', $message);
     }
-
-
 
     public function render()
     {

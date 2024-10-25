@@ -16,19 +16,5 @@ import { io } from "socket.io-client";
 // Connect to your Socket.io server
 const socket = io('http://localhost:3001');
 
-socket.on('connect', () => {
-    console.log('Conexión establecida');
-});
-
-socket.on('progressUpdate', (data) => {
-    const progress = data.progress;
-    console.log(`Progress received: ${progress}%`);
-
-    // Emit to Livewire the updated progress
-    Livewire.emit('progressUpdated', progress);
-});
 
 
-socket.on('disconnect', () => {
-    console.log('Desconectado');
-});
